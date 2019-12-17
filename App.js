@@ -15,6 +15,7 @@ export default class App extends Component {
       headerTitleStyle: { textAlign: "center", flex: 1 }
     }
   }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -44,7 +45,6 @@ export default class App extends Component {
   }
 
   handlePressCard = (i) => {
-    console.log('index ==' + i)
     if (this.state.fullSizedCard === i) {
       this.setState({
         fullSizedCard: null
@@ -85,9 +85,10 @@ export default class App extends Component {
     }
     return (
       <View style={styles.container}>
+        <View style={styles.header}><Text style={styles.title}>List of Exhibitions</Text></View>
         <ScrollView>
           {this.state.exhibitions.map((e, i) => {
-            return <View style={styles.box} key={i}>{this.renderItem(e, i)}</View>
+            return <View style={styles.card} key={i}>{this.renderItem(e, i)}</View>
           })}
         </ScrollView>
       </View>
@@ -102,6 +103,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // backgroundColor: 'red',
   },
+
+  header: {
+    height: 60,
+    backgroundColor: '#66cdaa',
+    width: '100%'
+  },
+
   title: {
     fontFamily: 'Rubik-bold',
     fontSize: 20,
@@ -116,7 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
 
-  box: {
+  card: {
     // backgroundColor: 'pink',
     margin: 20,
     padding: 20,
