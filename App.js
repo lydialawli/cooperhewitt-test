@@ -39,6 +39,14 @@ export default class App extends Component {
     return <TouchableOpacity key={item.id} style={styles.list}>
       <Text style={styles.title}>{item.title.toUpperCase()}</Text>
       <Text style={styles.lightText}>{item.text}</Text>
+      <View style={styles.wrapDates}>
+        <View>
+          <Text>Starts</Text><Text>{item.date_start}</Text>
+        </View>
+        <View>
+          <Text>Ends</Text><Text>{item.date_end}</Text>
+        </View>
+      </View>
     </TouchableOpacity>
   }
 
@@ -84,13 +92,22 @@ const styles = StyleSheet.create({
   },
 
   box: {
-    backgroundColor: 'pink',
+    // backgroundColor: 'pink',
     margin: 20,
-    padding: 20
+    padding: 20,
+    borderRadius: 1,
+    elevation: 2,
+    shadowOpacity: 0.3,
   },
 
   list: {
     // backgroundColor: "grey",
     flex: 1
+  },
+
+  wrapDates: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 20
   }
 });
