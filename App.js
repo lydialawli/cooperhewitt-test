@@ -3,6 +3,7 @@ import { ACCESS_TOKEN } from 'react-native-dotenv';
 import {
   StyleSheet, Text, View, ActivityIndicator, TouchableOpacity, ScrollView
 } from 'react-native';
+import * as Font from 'expo-font';
 
 // ApiClient.init(ACCESS_TOKEN)
 
@@ -23,6 +24,12 @@ export default class App extends Component {
   }
 
   componentDidMount() {
+    Font.loadAsync({
+      'Rubik-light': require('./assets/fonts/Rubik-Light.ttf'),
+      'Rubik-normal': require('./assets/fonts/Rubik-Medium.ttf'),
+      'Rubik-bold': require('./assets/fonts/Rubik-Bold.ttf')
+    })
+
     fetch(`https://api.collection.cooperhewitt.org/rest/?method=cooperhewitt.exhibitions.getList&access_token=${ACCESS_TOKEN}&page=1&per_page=100`)
       .then(response => response.json())
       .then((res) => {
@@ -38,13 +45,13 @@ export default class App extends Component {
   renderItem = (item) => {
     return <TouchableOpacity key={item.id} style={styles.list}>
       <Text style={styles.title}>{item.title.toUpperCase()}</Text>
-      <Text style={styles.lightText}>{item.text}</Text>
+      <Text style={styles.textLight}>{item.text}</Text>
       <View style={styles.wrapDates}>
         <View>
-          <Text>Starts</Text><Text>{item.date_start}</Text>
+          <Text style={styles.textMedium}>Starts</Text><Text style={styles.textLight}>{item.date_start}</Text>
         </View>
         <View>
-          <Text>Ends</Text><Text>{item.date_end}</Text>
+          <Text style={styles.textMedium}>Ends</Text><Text style={styles.textLight}>{item.date_end}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -79,6 +86,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
   },
   title: {
+    fontFamily: 'Rubik-bold',
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
@@ -100,9 +108,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
   },
 
-  list: {
-    // backgroundColor: "grey",
-    flex: 1
+  textLight: {
+    fontFamily: 'Rubik-light',
+  },
+
+  textMedium: {
+    fontFamily: 'Rubik-normal',
   },
 
   wrapDates: {
