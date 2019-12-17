@@ -1,18 +1,33 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' + 'Shake or press menu button for dev menu',
-});
+import { StyleSheet, Text, View } from 'react-native';
 
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      dataSource: []
+    };
+  }
+
+  componentDidMount() {
+    fetch(`https://api.collection.cooperhewitt.org/rest/?method=cooperhewitt.exhibitions.getList&access_token=${process.env.ACCESS_TOKEN}&page=1&per_page=100`)
+      .then(response => response.json())
+      .then((res) => {
+        console.log('data is: ', res)
+        this.setState({
+          loading: false,
+          dataSource: res
+        })
+      })
+      .catch(error => console.log(error)) 
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+
       </View>
     );
   }
