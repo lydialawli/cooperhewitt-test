@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { ACCESS_TOKEN } from 'react-native-dotenv';
 import {
-  StyleSheet, Text, View, ActivityIndicator,
-  FlatList, TouchableOpacity
+  StyleSheet, Text, View, ActivityIndicator, TouchableOpacity, ScrollView
 } from 'react-native';
 
 // ApiClient.init(ACCESS_TOKEN)
@@ -27,14 +26,22 @@ export default class App extends Component {
     fetch(`https://api.collection.cooperhewitt.org/rest/?method=cooperhewitt.exhibitions.getList&access_token=${ACCESS_TOKEN}&page=1&per_page=100`)
       .then(response => response.json())
       .then((res) => {
-        // console.log('data is: ', res)
+        // console.log('data is: ', res.exhibitions.length)
         this.setState({
           loading: false,
-          exhibitions: res
+          exhibitions: res.exhibitions
         })
       })
       .catch(error => console.log(error))
   }
+
+  renderItem = (item) => {
+    return <TouchableOpacity key={item.id} style={styles.list}>
+      <Text style={styles.title}>{item.title.toUpperCase()}</Text>
+      <Text style={styles.lightText}>{item.text}</Text>
+    </TouchableOpacity>
+  }
+
 
   render() {
     if (this.state.loading) {
@@ -46,8 +53,11 @@ export default class App extends Component {
     }
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-
+        <ScrollView>
+          {this.state.exhibitions.map((e, i) => {
+            return <View style={styles.box} key={i}>{this.renderItem(e)}</View>
+          })}
+        </ScrollView>
       </View>
     )
   }
@@ -58,12 +68,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    // backgroundColor: 'red',
   },
-  welcome: {
+  title: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+    color: 'black'
   },
   loader: {
     flex: 1,
@@ -71,4 +82,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff"
   },
+
+  box: {
+    backgroundColor: 'pink',
+    margin: 20,
+    padding: 20
+  },
+
+  list: {
+    // backgroundColor: "grey",
+    flex: 1
+  }
 });
