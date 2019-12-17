@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { ACCESS_TOKEN } from 'react-native-dotenv';
 import { StyleSheet, Text, View } from 'react-native';
+
+// ApiClient.init(ACCESS_TOKEN)
 
 export default class App extends Component {
   constructor(props) {
@@ -11,7 +14,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    fetch(`https://api.collection.cooperhewitt.org/rest/?method=cooperhewitt.exhibitions.getList&access_token=${process.env.ACCESS_TOKEN}&page=1&per_page=100`)
+    fetch(`https://api.collection.cooperhewitt.org/rest/?method=cooperhewitt.exhibitions.getList&access_token=${ACCESS_TOKEN}&page=1&per_page=100`)
       .then(response => response.json())
       .then((res) => {
         console.log('data is: ', res)
@@ -20,7 +23,7 @@ export default class App extends Component {
           dataSource: res
         })
       })
-      .catch(error => console.log(error)) 
+      .catch(error => console.log(error))
   }
 
   render() {
