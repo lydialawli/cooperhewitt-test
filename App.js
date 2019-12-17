@@ -19,7 +19,8 @@ export default class App extends Component {
     super(props);
     this.state = {
       loading: true,
-      exhibitions: []
+      exhibitions: [],
+      fullSizedCard: null
     }
   }
 
@@ -42,10 +43,26 @@ export default class App extends Component {
       .catch(error => console.log(error))
   }
 
-  renderItem = (item) => {
-    return <TouchableOpacity key={item.id} style={styles.list}>
+  handlePressCard = (i) => {
+    console.log('index ==' + i)
+    if (this.state.fullSizedCard === i) {
+      this.setState({
+        fullSizedCard: null
+      })
+    }
+    else {
+      this.setState({
+        fullSizedCard: i
+      })
+    }
+  }
+
+  renderItem = (item, index) => {
+
+    return <TouchableOpacity key={item.id} style={styles.list} onPress={() => this.handlePressCard(index)}>
       <Text style={styles.title}>{item.title.toUpperCase()}</Text>
-      <Text style={styles.textLight}>{item.text}</Text>
+      {this.state.fullSizedCard === index ? <Text style={styles.textLight}>{item.text}</Text> : <Text ellipsizeMode='tail' numberOfLines={3} style={styles.textLight}>{item.text}</Text>}
+
       <View style={styles.wrapDates}>
         <View>
           <Text style={styles.textMedium}>Starts</Text><Text style={styles.textLight}>{item.date_start}</Text>
@@ -70,7 +87,7 @@ export default class App extends Component {
       <View style={styles.container}>
         <ScrollView>
           {this.state.exhibitions.map((e, i) => {
-            return <View style={styles.box} key={i}>{this.renderItem(e)}</View>
+            return <View style={styles.box} key={i}>{this.renderItem(e, i)}</View>
           })}
         </ScrollView>
       </View>
@@ -120,5 +137,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 20
-  }
+  },
+
 });
