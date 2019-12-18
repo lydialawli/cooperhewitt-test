@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
 import { ACCESS_TOKEN } from 'react-native-dotenv';
 import {
-  StyleSheet, Text, View, ActivityIndicator, TouchableOpacity, ScrollView
+  StyleSheet, Text, View, ActivityIndicator, TouchableOpacity, Button, ScrollView
 } from 'react-native';
 import * as Font from 'expo-font';
+import { Linking } from 'expo';
 
-// ApiClient.init(ACCESS_TOKEN)
 
 export default class App extends Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "List of Exhibitions",
-      headerStyle: { backgroundColor: "#fff" },
-      headerTitleStyle: { textAlign: "center", flex: 1 }
-    }
-  }
 
   constructor(props) {
     super(props);
@@ -57,6 +50,10 @@ export default class App extends Component {
     }
   }
 
+  openUrl = (e) => {
+    Linking.openURL(e.url);
+  }
+
   renderItem = (item, index) => {
 
     return <TouchableOpacity key={item.id} style={styles.list} onPress={() => this.handlePressCard(index)}>
@@ -67,6 +64,7 @@ export default class App extends Component {
         <View>
           <Text style={styles.textMedium}>Starts</Text><Text style={styles.textLight}>{item.date_start}</Text>
         </View>
+        <Button title="more details" color="#FF5700" onPress={() => this.openUrl(item)}></Button>
         <View>
           <Text style={styles.textMedium}>Ends</Text><Text style={styles.textLight}>{item.date_end}</Text>
         </View>
@@ -85,7 +83,7 @@ export default class App extends Component {
     }
     return (
       <View style={styles.container}>
-        <View style={styles.header}><Text style={styles.title}>List of Exhibitions</Text></View>
+        <View style={styles.header}><Text style={styles.title}>LIST OF EXHIBITIONS</Text></View>
         <ScrollView>
           {this.state.exhibitions.map((e, i) => {
             return <View style={styles.card} key={i}>{this.renderItem(e, i)}</View>
@@ -106,8 +104,9 @@ const styles = StyleSheet.create({
 
   header: {
     height: 60,
-    backgroundColor: '#66cdaa',
-    width: '100%'
+    backgroundColor: '#FF5700',
+    width: '100%',
+    elevation:5
   },
 
   title: {
