@@ -19,14 +19,16 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    Font.loadAsync({
-      'Rubik-light': require('./assets/fonts/Rubik-Light.ttf'),
-      'Rubik-normal': require('./assets/fonts/Rubik-Medium.ttf'),
-      'Rubik-bold': require('./assets/fonts/Rubik-Bold.ttf')
-    })
+    Promise.all([
+      Font.loadAsync({
+        'Rubik-light': require('./assets/fonts/Rubik-Light.ttf'),
+        'Rubik-normal': require('./assets/fonts/Rubik-Medium.ttf'),
+        'Rubik-bold': require('./assets/fonts/Rubik-Bold.ttf')
+      }),
+      fetch(`https://api.collection.cooperhewitt.org/rest/?method=cooperhewitt.exhibitions.getList&access_token=${ACCESS_TOKEN}&page=1&per_page=100`)
+    ])
 
-    fetch(`https://api.collection.cooperhewitt.org/rest/?method=cooperhewitt.exhibitions.getList&access_token=${ACCESS_TOKEN}&page=1&per_page=100`)
-      .then(response => response.json())
+      .then(([fonts,response]) => response.json())
       .then((res) => {
         // console.log('data is: ', res.exhibitions.length)
         this.setState({
@@ -106,7 +108,7 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: '#FF5700',
     width: '100%',
-    elevation:5
+    elevation: 5
   },
 
   title: {
